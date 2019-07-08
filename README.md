@@ -15,7 +15,7 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [ ] editing recipe
   - [ ] editing profile
 - [ ] Create models
-  - [ ] user
+  - [x] user
   - [ ] recipe
 - [x] Connect to databse
 - [ ] Configure authentication
