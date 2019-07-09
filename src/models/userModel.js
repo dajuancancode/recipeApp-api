@@ -45,14 +45,34 @@ userSchema.methods.generateAuthToken = async function () {
   return token
 }
 
+userSchema.statics.findUser = async function (email, password) {
+
+  const user = await User.findOne({email})
+
+  if (!user) {
+    throw new Error('No user found with that email address')
+  }
+
+  const hashedPassword = await bcrypt.compare(password, user.password)
+  
+  if (!hashedPassword) {
+    throw new Error('Invalid Password')
+  }
+
+  return user
+
+}
+
 userSchema.pre('save', async function(next) {
   const user = this
 
-  if (user.isModified) {
+  if (user.isModified('password')) {
     user.password = await bcrypt.hash(user.password, 8)
   }
 
   next()
 })
 
-module.exports = mongoose.model('User', userSchema)
+const User = mongoose.model('User', userSchema)
+
+module.exports = User

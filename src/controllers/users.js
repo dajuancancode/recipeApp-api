@@ -12,4 +12,15 @@ const createUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser }
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body
+    const user = await User.findUser(email, password)
+    res.send(user)
+  } catch (e) {
+    console.log(e)
+    res.status(400).send()
+  }
+}
+
+module.exports = { createUser, loginUser }

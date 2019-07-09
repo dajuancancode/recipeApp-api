@@ -6,7 +6,7 @@ This is a restful api for a web app that will allow users to sign up and share t
 
 - [ ] Create routes
   - [x] signing up
-  - [ ] logging in
+  - [x] logging in
   - [ ] logging out
   - [ ] viewing profiles
   - [ ] viewing recipes
@@ -24,7 +24,7 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [ ] create middleware for authenrication
 - [ ] Create controllers
   - [x] signing up
-  - [ ] logging in
+  - [x] logging in
   - [ ] logging out
   - [ ] viewing profiles
   - [ ] viewing recipes
