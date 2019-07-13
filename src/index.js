@@ -2,13 +2,13 @@ require('dotenv').config()
 require('./db/mongoose')
 
 const express = require('express')
-const apiRouter = require('./routes/index')
+const userRouter = require('./routes/userRouter')
 
 
 const app = express()
 const port = process.env.PORT || 3000
 
 app.use(express.json())
-app.use(apiRouter)
+app.use('/users' , userRouter)
 
 app.listen(port, () => console.log(`Listening on port ${port}`))

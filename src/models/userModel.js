@@ -3,7 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-const { SECRET_KEY } = process.env
+const { JWT_SECRET_KEY } = process.env
 
 const socialSchema = mongoose.Schema({
   name: { type: String, trim: true},
@@ -11,7 +11,16 @@ const socialSchema = mongoose.Schema({
 })
 
 const userSchema = mongoose.Schema({
-  name: { type: String, required: true, trim: true},
+  name: { 
+    type: String,
+    required: true, 
+    trim: true,
+    validate(value) {
+      if (value === '') {
+        throw new Error('Please enter your name')
+      }
+    }
+  },
   email: { 
     type: String,
     required: true,
@@ -19,11 +28,20 @@ const userSchema = mongoose.Schema({
     trim: true,
     validate(value) { 
       if (!validator.isEmail(value)) {
-        throw new Error('Must enter a valid email')
+        throw new Error('Please enter a valid email')
       }
     }
   },
-  password: { type: String, required: true, trim: true},
+  password: { 
+    type: String,
+    required: true,
+    trim: true,
+    validate(value) {
+      if (value.length < 6) {
+        throw new Error('Password must be at least 6 characters long')
+      }
+    }
+  },
   avatar: { type: Buffer },
   socials: [socialSchema], 
   tokens: [ { token: {type: String, required: true} } ]
@@ -38,30 +56,37 @@ userSchema.virtual('recipes', {
 userSchema.methods.generateAuthToken = async function () {
   const user = this
 
-  const token = await jwt.sign({_id: user._id}, SECRET_KEY)
+  const token = await jwt.sign({_id: user._id}, JWT_SECRET_KEY)
   user.tokens = user.tokens.concat({token})
 
   await user.save()
   return token
 }
 
-userSchema.statics.findUser = async function (email, password) {
-
+userSchema.statics.findUser = async function(email, password) {
   const user = await User.findOne({email})
 
   if (!user) {
-    throw new Error('No user found with that email address')
+    throw new Error('No user with that email exists')
   }
 
-  const hashedPassword = await bcrypt.compare(password, user.password)
-  
-  if (!hashedPassword) {
-    throw new Error('Invalid Password')
+  const isMatched = await bcrypt.compare(password, user.password)
+
+  if (!isMatched) {
+    throw new Error('Incorrect password, please try again')
   }
 
   return user
-
+  
 }
+
+userSchema.post('save', function(error, doc, next) {
+  if (error.name === 'MongoError' && error.code === 11000) {
+    next(new Error('Email is already registered'));
+  } else {
+    next();
+  }
+});
 
 userSchema.pre('save', async function(next) {
   const user = this

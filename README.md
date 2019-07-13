@@ -4,7 +4,7 @@ This is a restful api for a web app that will allow users to sign up and share t
 
 ## TODO
 
-- [ ] Create routes
+- [ ] Create routes and controllers
   - [x] signing up
   - [x] logging in
   - [ ] logging out
@@ -20,18 +20,10 @@ This is a restful api for a web app that will allow users to sign up and share t
 - [x] Connect to databse
 - [ ] Configure authentication
   - [ ] sign up with social media
-  - [ ] sign up with email and password
+  - [x] sign up with email and password
+  - [x] login
+  - [ ] logout
   - [ ] create middleware for authenrication
-- [ ] Create controllers
-  - [x] signing up
-  - [x] logging in
-  - [ ] logging out
-  - [ ] viewing profiles
-  - [ ] viewing recipes
-  - [ ] viewing recipe list
-  - [ ] creating recipe
-  - [ ] editing recipe
-  - [ ] editing profile
 
 ## Author
 
