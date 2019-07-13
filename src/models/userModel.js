@@ -63,6 +63,17 @@ userSchema.methods.generateAuthToken = async function () {
   return token
 }
 
+userSchema.methods.toJSON = function () {
+  const user = this
+  const userObject = user.toObject()
+
+  delete userObject.password
+  delete userObject.tokens
+  delete userObject.avatar
+
+  return userObject
+}
+
 userSchema.statics.findUser = async function(email, password) {
   const user = await User.findOne({email})
 
@@ -95,6 +106,11 @@ userSchema.pre('save', async function(next) {
     user.password = await bcrypt.hash(user.password, 8)
   }
 
+  next()
+})
+
+userSchema.pre('remove', async function(next) {
+  const user = this
   next()
 })
 

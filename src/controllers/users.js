@@ -39,4 +39,36 @@ const logoutUser = async (req, res) => {
   }
 }
 
-module.exports = { createUser, loginUser, logoutUser }
+const viewUser = async (req, res) => {
+  try {
+    const user = await User.findOne({_id: req.params.id})
+    res.send(user)
+  } catch (e) {
+    res.status(400).send()
+  }
+}
+
+
+const deleteUser = async (req, res) => {
+  try {
+    const user = await User.findByIdAndDelete({_id: req.user._id})
+    res.send({user})
+  } catch (e) {
+    console.log(e)
+    res.status(400).send()
+  }
+}
+
+const updateUser = async (req,res) => {
+  const updates = Object.keys(req.body)
+    
+  try {
+    updates.forEach(update => req.user[update] = req.body[update])
+    req.user.save()
+    res.send(req.user)
+  } catch (e) {
+    console.log(e)
+    res.status(400).send()
+  }
+}
+module.exports = { createUser, loginUser, logoutUser, viewUser, deleteUser, updateUser }

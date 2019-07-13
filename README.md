@@ -8,18 +8,19 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [x] signing up
   - [x] logging in
   - [x] logging out
-  - [ ] viewing profiles
+  - [x] viewing profiles
+  - [x] editing profile
+  - [x] delete user
   - [ ] viewing recipes
   - [ ] viewing recipe list
   - [ ] creating recipe
   - [ ] editing recipe
-  - [ ] editing profile
+  - [ ] delete recipe
 - [ ] Create models
   - [x] user
   - [ ] recipe
 - [x] Connect to databse
-- [ ] Configure authentication
-  - [ ] sign up with social media
+- [x] Configure authentication
   - [x] sign up with email and password
   - [x] login
   - [x] logout
