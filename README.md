@@ -4,7 +4,7 @@ This is a restful api for a web app that will allow users to sign up and share t
 
 ## TODO
 
-- [ ] Create routes and controllers
+- [x] Create routes and controllers
   - [x] signing up
   - [x] logging in
   - [x] logging out
@@ -12,10 +12,10 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [x] editing profile
   - [x] delete user
   - [x] viewing recipes
-  - [ ] viewing recipe list
+  - [x] viewing recipe list
   - [x] creating recipe
   - [x] editing recipe
-  - [ ] delete recipe
+  - [x] delete recipe
 - [x] Create models
   - [x] user
   - [x] recipe
@@ -25,6 +25,8 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [x] login
   - [x] logout
   - [x] create middleware for authentication
+
+My TODO's might be done, but I'm sure there is other stuff to work on that I didn't think about
 
 ## Author
 

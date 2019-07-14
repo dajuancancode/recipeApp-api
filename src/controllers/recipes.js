@@ -67,4 +67,35 @@ const deleteRecipe = async(req, res) => {
   }
 }
 
-module.exports = { createRecipe, getRecipe, editRecipe, deleteRecipe }
+const listRecipes = async(req, res) => {
+  const matches = Object.keys(req.body)
+  const possibleMatches = ['cusines.cuisine', 'dishType.dishTypes', 'name', 'diets.diet']
+
+  const matchObject = {}
+  const sort = {}
+
+  matches.forEach(match => {
+    if (possibleMatches.includes(match)) {
+      matchObject[match] = req.body[match]
+    }
+  })
+  
+  if (req.query.sortBy) {
+    const parts = req.query.sortBy.split('_')
+    sort[parts[0]] = parts[1] === 'desc' ? -1 : 1
+  }
+
+  const options =  {
+    limit: parseInt(req.query.limit),
+    sort
+  }
+
+  try {
+    const recipes = await Recipe.find(matchObject, null, options)
+    res.send(recipes)
+  } catch (e) {
+    res.status(404).send()
+  }
+}
+
+module.exports = { createRecipe, getRecipe, editRecipe, deleteRecipe, listRecipes }
