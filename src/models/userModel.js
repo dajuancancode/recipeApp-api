@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 
 const { JWT_SECRET_KEY } = process.env
 
+const Recipe = require('./recipeModel')
+
 const socialSchema = mongoose.Schema({
   name: { type: String, trim: true},
   link: { type: String, trim: true}
@@ -50,7 +52,7 @@ const userSchema = mongoose.Schema({
 userSchema.virtual('recipes', {
   ref: 'Recipe',
   localField: '_id',
-  foreignField: 'author'
+  foreignField: 'creator'
 })
 
 userSchema.methods.generateAuthToken = async function () {
@@ -99,6 +101,14 @@ userSchema.post('save', function(error, doc, next) {
   }
 });
 
+userSchema.pre('remove', async function(next) {
+  const user = this
+
+  await Recipe.deleteMany({creator: user._id})
+
+  next()
+})
+
 userSchema.pre('save', async function(next) {
   const user = this
 
@@ -106,11 +116,6 @@ userSchema.pre('save', async function(next) {
     user.password = await bcrypt.hash(user.password, 8)
   }
 
-  next()
-})
-
-userSchema.pre('remove', async function(next) {
-  const user = this
   next()
 })
 

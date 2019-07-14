@@ -1,5 +1,6 @@
 const sharp = require('sharp')
 const User = require('../models/userModel')
+const Recipe = require('../models/recipeModel')
 
 const createUser = async (req, res) => {
   const user = new User(req.body)
@@ -52,8 +53,8 @@ const viewUser = async (req, res) => {
 
 const deleteUser = async (req, res) => {
   try {
-    const user = await User.findByIdAndDelete({_id: req.user._id})
-    res.send({user})
+    await req.user.remove()
+    res.send(req.user)
   } catch (e) {
     console.log(e)
     res.status(400).send()
