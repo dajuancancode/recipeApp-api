@@ -11,12 +11,12 @@ This is a restful api for a web app that will allow users to sign up and share t
   - [x] viewing profiles
   - [x] editing profile
   - [x] delete user
-  - [ ] viewing recipes
+  - [x] viewing recipes
   - [ ] viewing recipe list
   - [x] creating recipe
-  - [ ] editing recipe
+  - [x] editing recipe
   - [ ] delete recipe
-- [ ] Create models
+- [x] Create models
   - [x] user
   - [x] recipe
 - [x] Connect to databse

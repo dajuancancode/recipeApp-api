@@ -2,10 +2,14 @@ const { Router } = require('express')
 const multer = require('multer')
 const authMiddleware = require('../middleware/authentication')
 
-const { createRecipe } = require('../controllers/recipes')
+const { createRecipe, getRecipe, editRecipe, deleteRecipe } = require('../controllers/recipes')
 
 const apiRouter = Router()
 
 apiRouter.post('/create', authMiddleware, createRecipe)
+
+apiRouter.get('/:id', getRecipe)
+apiRouter.patch('/:id', authMiddleware, editRecipe)
+apiRouter.delete('/:id', authMiddleware, deleteRecipe)
 
 module.exports = apiRouter
