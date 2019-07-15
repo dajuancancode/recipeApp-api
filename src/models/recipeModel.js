@@ -11,30 +11,12 @@ const RecipeSchema = new mongoose.Schema({
     required: true,
     ref: 'User'
   },
-  cuisines: [{
-    cuisine: {
-      type: String,
-      trim: true
-    }
-  }],
+  cuisines: [String],
   image: {
     type: Buffer
   },
-  ingredients: [{
-    ingredient: {
-      type: String,
-      trim: true
-    },
-    count: {
-      type: Number
-    }
-  }],
-  directions: [{
-    direction: {
-      type: String,
-      trim: true
-    }
-  }],
+  ingredients: [String],
+  directions: [String],
   description: {
     type: String,
     trim: true
