@@ -2,7 +2,7 @@ const { Router } = require('express')
 const multer = require('multer')
 const authMiddleware = require('../middleware/authentication')
 
-const { createUser, loginUser, logoutUser, viewUser, deleteUser, updateUser, uploadAvatar, deleteAvatar, fetchAvatar} = require('../controllers/users')
+const users = require('../controllers/users')
 
 const apiRouter = Router()
 
@@ -19,21 +19,24 @@ const upload = multer({
   }
 })
 
-apiRouter.post( '/signup', createUser )
-apiRouter.post( '/login', loginUser )
-apiRouter.post( '/logout', authMiddleware, logoutUser )
+apiRouter.post( '/signup',users.createUser )
+apiRouter.post( '/login', users.loginUser )
+apiRouter.post( '/logout', authMiddleware, users.logoutUser )
 
-apiRouter.get('/profile/:id', viewUser)
-apiRouter.patch('/profile', authMiddleware, updateUser)
+apiRouter.get('/profile/:id', users.viewUser)
+apiRouter.patch('/profile', authMiddleware, users.updateUser)
 
-apiRouter.delete('/delete', authMiddleware, deleteUser)
+apiRouter.delete('/delete', authMiddleware, users.deleteUser)
 
-apiRouter.post('/me/avatar', authMiddleware, upload.single('avatar'), uploadAvatar, (error, req, res, next) => {
+apiRouter.post('/me/avatar', authMiddleware, upload.single('avatar'), users.uploadAvatar, (error, req, res, next) => {
   res.status(400).send({error: error.message})
 })
 
-apiRouter.delete('/me/avatar', authMiddleware, deleteAvatar)
-apiRouter.get('/:id/avatar', fetchAvatar)
+apiRouter.delete('/me/avatar', authMiddleware, users.deleteAvatar)
+apiRouter.get('/:id/avatar', users.fetchAvatar)
+
+apiRouter.post('/forget', users.forgotPassword)
+apiRouter.post('/reset/:token', users.resetPassword)
 
 
 

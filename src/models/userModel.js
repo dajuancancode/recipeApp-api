@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
 
 const { JWT_SECRET_KEY } = process.env
 
@@ -46,7 +47,9 @@ const userSchema = mongoose.Schema({
   },
   avatar: { type: Buffer },
   socials: [socialSchema], 
-  tokens: [ { token: {type: String, required: true} } ]
+  tokens: [ { token: {type: String, required: true} } ],
+  resetPasswordToken: String,
+  resetPasswordExpires : Date
 }, {timestamps: true})
 
 userSchema.virtual('recipes', {
@@ -63,6 +66,17 @@ userSchema.methods.generateAuthToken = async function () {
 
   await user.save()
   return token
+}
+
+userSchema.methods.generateResetToken = async function () {
+  const user = this
+  
+  user.resetPasswordToken = crypto.randomBytes(20).toString('hex')
+  user.resetPasswordExpires = Date.now() + 60000
+
+  await user.save()
+
+  return user.resetPasswordToken
 }
 
 userSchema.methods.toJSON = function () {

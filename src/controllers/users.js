@@ -102,4 +102,46 @@ const fetchAvatar = async (req, res) => {
     res.status(404).send()
   }
 }
-module.exports = { createUser, loginUser, logoutUser, viewUser, deleteUser, updateUser, uploadAvatar, deleteAvatar, fetchAvatar }
+
+const forgotPassword = async(req, res) => {
+  try {
+    const user = await User.findOne({email: req.body.email})
+
+    if (!user) {
+      res.status(404).send()
+      return
+    }
+    
+    const token = await user.generateResetToken()
+    res.send({token})
+
+  } catch (e) {
+    res.status(400).send()
+  }
+}
+
+const resetPassword = async (req, res) => {
+  try {
+    const user = await User.findOne({resetPasswordToken: req.params.token})
+    
+    if (!user) {
+      res.status(404).send()
+      return
+    }
+
+    if (user.resetPasswordExpires < Date.now()) {
+      res.status(400).send({message: "Reset Token has expired"})
+      return
+    }
+
+    user.password = req.body.password
+    user.save()
+
+    res.send({user})
+
+  } catch (e) {
+    res.status(400).send()
+  }
+}
+
+module.exports = { createUser, loginUser, logoutUser, viewUser, deleteUser, updateUser, uploadAvatar, deleteAvatar, fetchAvatar, resetPassword, forgotPassword }
