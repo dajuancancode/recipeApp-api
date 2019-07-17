@@ -10,6 +10,9 @@ const recipeRouter = require('./routes/recipeRouter')
 const app = express()
 const port = process.env.PORT || 3000
 
+
+app.use(cors())
+
 /* Setup Bodyparser */
 app.use(express.urlencoded({extended: false}))
 app.use(express.json())
